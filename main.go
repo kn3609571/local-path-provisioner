@@ -18,7 +18,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/klog/v2"
 
-	pvController "sigs.k8s.io/sig-storage-lib-external-provisioner/v8/controller"
+	pvController "sigs.k8s.io/sig-storage-lib-external-provisioner/v10/controller"
 )
 
 var (
@@ -51,12 +51,12 @@ var (
 	EnvConfigMountPath            = "CONFIG_MOUNT_PATH"
 )
 
-func cmdNotFound(c *cli.Context, command string) {
+func cmdNotFound(_ *cli.Context, command string) {
 	panic(fmt.Errorf("Unrecognized command: %s", command))
 }
 
-func onUsageError(c *cli.Context, err error, isSubcommand bool) error {
-	panic(fmt.Errorf("Usage error, please check your command"))
+func onUsageError(_ *cli.Context, err error, _ bool) error {
+	panic(errors.Wrap(err, "Usage error, please check your command"))
 }
 
 func RegisterShutdownChannel(cancelFn context.CancelFunc) {
@@ -262,6 +262,7 @@ func startDaemon(c *cli.Context) error {
 		return err
 	}
 	pc := pvController.NewProvisionController(
+		klog.FromContext(ctx),
 		kubeClient,
 		provisionerName,
 		provisioner,

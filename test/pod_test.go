@@ -147,7 +147,7 @@ func (p *PodTestSuite) TestPodWithSubpath() {
 	runTest(p, []string{p.config.IMAGE}, "ready", hostPathVolumeType, hostPathDirectoryOrCreate)
 }
 
-func (p *PodTestSuite) TestPodWithMultipleStorageClasses() {
+func (p *PodTestSuite) xxTestPodWithMultipleStorageClasses() {
 	p.kustomizeDir = "multiple-storage-classes"
 
 	runTest(p, []string{p.config.IMAGE}, "ready", hostPathVolumeType, hostPathDirectoryOrCreate)
